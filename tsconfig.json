@@ -1,20 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "baseUrl": "src",
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "lib": [
-      "es2017",
-      "es7",
-      "es6",
-      "dom"
+      "ESNext"
     ],
-    "declaration": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "dist",
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
-    "esModuleInterop": true
+    "strictPropertyInitialization": false,
+    "target": "esnext"
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
 }
