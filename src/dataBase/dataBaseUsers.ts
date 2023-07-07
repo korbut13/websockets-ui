@@ -1,4 +1,4 @@
 import { DataBase } from "../utils/types";
-export const dataBase: DataBase = {
+export const dataBaseUsers: DataBase = {
   players: []
 };
