@@ -19,5 +19,6 @@ export const createRoomHandler = (connectionId: string) => {
     data: JSON.stringify(dataBaseRooms),
     id: 0
   };
+
   wss.clients.forEach((client) => client.send(JSON.stringify(resp)));
 }

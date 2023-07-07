@@ -1,5 +1,3 @@
-//import { WebSocket } from "ws";
-
 import { dataBaseRooms } from "../../dataBase/dataBaseRooms";
 import { connections } from "../../dataBase/dataBaseConnections";
 import { isPlayerInCurrentRoom } from "../../utils/isPlayerInCurrentRoom";
@@ -14,28 +12,29 @@ export const addUserToRoomHandler = (req: Request, connectionId: string) => {
 
   const idUser = connections.get(connectionId)!.idPlayer;
 
-  let idPlayer: number;
-
-  if (!isPlayerInCurrentRoom(currentRoom, idUser)) {
+  if (!isPlayerInCurrentRoom(currentRoom, idUser) && currentRoom.roomUsers.length < 2) {
     const newPlayer = { ...connections.get(connectionId) } as Player;
     currentRoom.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer });
-    idPlayer = 1;
-  } else {
-    idPlayer = 0;
   }
-  const dataGame = {
-    idGame: indexRoom,
-    idPlayer: idPlayer
-  };
 
-  const resp = {
-    type: "create_game",
-    data: JSON.stringify(dataGame),
-    id: 0,
+  if (currentRoom.roomUsers.length === 2) {
+    currentRoom.roomUsers.forEach((player, index) => {
+      const dataGame = {
+        idGame: indexRoom,
+        idPlayer: index,
+      };
+      const resp = {
+        type: "create_game",
+        data: JSON.stringify(dataGame),
+        id: 0,
+      }
+      if (connections.has(player.index)) {
+        connections.get(player.index)!.ws.send(JSON.stringify(resp))
+      }
+    })
+    dataBaseRooms.splice(indexRoom, 1);
+
   }
-  currentRoom.roomUsers.forEach((player) => {
-    if (connections.has(player.index)) {
-      connections.get(player.index)!.ws.send(JSON.stringify(resp))
-    }
-  })
+
+
 }
