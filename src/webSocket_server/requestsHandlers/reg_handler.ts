@@ -1,5 +1,3 @@
-import { randomBytes } from "crypto";
-
 import { connections } from "../../dataBase/dataBaseConnections";
 import { dataBaseUsers } from "../../dataBase/dataBaseUsers";
 import { Request } from "../../utils/types";
@@ -8,11 +6,12 @@ import { WebSocket } from "ws";
 export const regHandler = (ws: WebSocket, req: Request, connectionId: string) => {
 
   const dataPlayer: { name: string, password: string } = JSON.parse(req.data);
-  const idPlayer = randomBytes(16).toString('hex');
+
   const player = {
     name: dataPlayer.name,
     password: dataPlayer.password,
-    idPlayer: idPlayer,
+    idPlayer: connectionId,
+    ws: ws,
   }
   connections.set(connectionId, player);
 

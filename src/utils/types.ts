@@ -1,3 +1,5 @@
+import { WebSocket } from "ws";
+
 export type RegData = {
   type: string,
   data: {
@@ -15,6 +17,7 @@ export type Player = {
   name: string,
   password: string,
   idPlayer: string,
+  ws: WebSocket
 }
 
 export type Request = {

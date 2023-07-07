@@ -14,6 +14,7 @@ export const eventHandler = (ws: WebSocket) => {
     try {
       const req: Request = JSON.parse(message);
       const typeOfReq = req.type;
+      console.log(JSON.parse(message))
 
       switch (typeOfReq) {
         case 'reg':
@@ -23,7 +24,7 @@ export const eventHandler = (ws: WebSocket) => {
           createRoomHandler(connectionId)
           break;
         case 'add_user_to_room':
-          addUserToRoomHandler(ws, req, connectionId)
+          addUserToRoomHandler(req, connectionId)
           break;
       }
 
