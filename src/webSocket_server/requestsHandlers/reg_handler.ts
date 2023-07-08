@@ -1,6 +1,6 @@
 import { connections } from "../../dataBase/dataBaseConnections";
 import { dataBaseUsers } from "../../dataBase/dataBaseUsers";
-import { Request } from "../../utils/types";
+import { Player, Request } from "../../utils/types";
 import { WebSocket } from "ws";
 
 export const regHandler = (ws: WebSocket, req: Request, connectionId: string) => {
@@ -12,7 +12,8 @@ export const regHandler = (ws: WebSocket, req: Request, connectionId: string) =>
     password: dataPlayer.password,
     idPlayer: connectionId,
     ws: ws,
-  }
+  } as Player;
+
   connections.set(connectionId, player);
 
   dataBaseUsers.players.push(player); //????

@@ -14,6 +14,7 @@ export const createRoomHandler = (connectionId: string) => {
 
   dataBaseRooms.push(newRoom as Room);
 
+
   const resp = {
     type: "update_room",
     data: JSON.stringify(dataBaseRooms),

@@ -4,6 +4,8 @@ import { randomBytes } from "crypto";
 import { regHandler } from "./requestsHandlers/reg_handler";
 import { createRoomHandler } from "./requestsHandlers/create_room_handler";
 import { addUserToRoomHandler } from "./requestsHandlers/add_user_to_room_handler";
+import { addShipsHandler } from "./requestsHandlers/add_ships_handler";
+import { dataBaseRooms } from "../dataBase/dataBaseRooms";
 
 import { Request } from "../utils/types";
 
@@ -14,7 +16,7 @@ export const eventHandler = (ws: WebSocket) => {
     try {
       const req: Request = JSON.parse(message);
       const typeOfReq = req.type;
-      console.log(JSON.parse(message))
+      console.log("daraBase", dataBaseRooms)
 
       switch (typeOfReq) {
         case 'reg':
@@ -26,6 +28,9 @@ export const eventHandler = (ws: WebSocket) => {
         case 'add_user_to_room':
           addUserToRoomHandler(req, connectionId)
           break;
+        case 'add_ships':
+          addShipsHandler(ws, req);
+          break
       }
 
     } catch (err) {

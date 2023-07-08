@@ -33,8 +33,6 @@ export const addUserToRoomHandler = (req: Request, connectionId: string) => {
       }
     })
     dataBaseRooms.splice(indexRoom, 1);
-
   }
-
 
 }
