@@ -13,20 +13,12 @@ export type DataBase = {
   players: Player[]
 };
 
-export type Room = {
-  roomId: number,
-  roomUsers: { name: string, index: string }[],
-}
-
 export type Player = {
   name: string,
   password: string,
   idPlayer: string,
   ws: WebSocket,
-  plauerRoom: {
-    roomId: number,
-    roomUsers: { name: string, index: string, ships: Shpip[] }[],
-  }
+  room: Room,
 }
 
 export type Request = {
@@ -35,10 +27,13 @@ export type Request = {
   id: number,
 }
 
-
+export type Room = {
+  roomId: number,
+  roomUsers: { name: string, index: string, ships: Ship[] }[],
+}
 export type DataBaseRooms = Room[];
 
-export type Shpip = {
+export type Ship = {
   position: {
     x: number,
     y: number,

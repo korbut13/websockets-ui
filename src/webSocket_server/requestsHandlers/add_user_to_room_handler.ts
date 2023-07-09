@@ -2,6 +2,7 @@ import { dataBaseRooms } from "../../dataBase/dataBaseRooms";
 import { connections } from "../../dataBase/dataBaseConnections";
 import { isPlayerInCurrentRoom } from "../../utils/isPlayerInCurrentRoom";
 import { Request, Room, Player } from "../../utils/types";
+import { dataBaseGames } from "../../dataBase/dataBaseGames";
 
 
 export const addUserToRoomHandler = (req: Request, connectionId: string) => {
@@ -14,7 +15,16 @@ export const addUserToRoomHandler = (req: Request, connectionId: string) => {
 
   if (!isPlayerInCurrentRoom(currentRoom, idUser) && currentRoom.roomUsers.length < 2) {
     const newPlayer = { ...connections.get(connectionId) } as Player;
-    currentRoom.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer });
+
+    const playerInCurrentRoom = currentRoom.roomUsers.filter((player) => player.index !== idUser)[0];
+    const idPlayerInCurrentRoom = playerInCurrentRoom!.index;
+
+    // connections.get(idPlayerInCurrentRoom)!.room.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer, ships: [] });
+
+    currentRoom.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer, ships: [] });
+    //connections.get(idPlayerInCurrentRoom)!.room.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer, ships: [] });
+    connections.get(idPlayerInCurrentRoom)!.room = currentRoom;
+    connections.get(idUser)!.room = currentRoom;
   }
 
   if (currentRoom.roomUsers.length === 2) {
@@ -23,6 +33,11 @@ export const addUserToRoomHandler = (req: Request, connectionId: string) => {
         idGame: indexRoom,
         idPlayer: index,
       };
+
+      const game = new Map();
+      game.set(index, [])
+      dataBaseGames.set(indexRoom, game);
+
       const resp = {
         type: "create_game",
         data: JSON.stringify(dataGame),

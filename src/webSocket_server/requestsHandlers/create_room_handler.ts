@@ -9,11 +9,12 @@ export const createRoomHandler = (connectionId: string) => {
 
   const newRoom = {
     roomId: dataBaseRooms.length,
-    roomUsers: [{ name: user!.name, index: user!.idPlayer }]
+    roomUsers: [{ name: user!.name, index: user!.idPlayer, ships: [] }]
   };
 
-  dataBaseRooms.push(newRoom as Room);
+  connections.get(connectionId)!.room = newRoom;
 
+  dataBaseRooms.push(newRoom as Room);
 
   const resp = {
     type: "update_room",
