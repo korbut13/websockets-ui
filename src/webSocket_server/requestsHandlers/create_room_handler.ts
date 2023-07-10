@@ -12,8 +12,6 @@ export const createRoomHandler = (connectionId: string) => {
     roomUsers: [{ name: user!.name, index: user!.idPlayer, ships: [] }]
   };
 
-  connections.get(connectionId)!.room = newRoom;
-
   dataBaseRooms.push(newRoom as Room);
 
   const resp = {

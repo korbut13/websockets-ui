@@ -1,21 +1,21 @@
 
-import { Request, Ship } from "../../utils/types";
 import { dataBaseGames } from "../../dataBase/dataBaseGames";
+import { Request, Ship } from "../../utils/types";
 import { connections } from "../../dataBase/dataBaseConnections";
 
-export const addShipsHandler = (req: Request, connectionId: string) => {
+export const addShipsHandler = (req: Request) => {
   const reqData: { gameId: number, ships: Ship[], indexPlayer: number } = JSON.parse(req.data);
 
   const gameId = reqData.gameId;
   const ships = reqData.ships;
   const currentPlayerIndex = reqData.indexPlayer;
 
-  dataBaseGames.get(gameId)?.set(currentPlayerIndex, { indexPlayer: connectionId, ships: ships });
-  const ammountShipsFirstPlayer = dataBaseGames.get(gameId)?.get(0)?.ships.length;
-  const ammountShipsSecondPlayer = dataBaseGames.get(gameId)?.get(1)?.ships.length;
+  dataBaseGames.get(gameId)!.get(currentPlayerIndex)!.ships.push(...ships);
 
-  if (ammountShipsFirstPlayer && ammountShipsSecondPlayer) {
+  const shipsOfFirstPlayer = dataBaseGames.get(gameId)?.get(0)?.ships.length;
+  const shipsOfSecondPlayer = dataBaseGames.get(gameId)?.get(1)?.ships.length;
 
+  if (shipsOfFirstPlayer !== 0 && shipsOfSecondPlayer !== 0) {
     const resp = {
       type: "start_game",
       data: JSON.stringify({
@@ -31,13 +31,8 @@ export const addShipsHandler = (req: Request, connectionId: string) => {
 
     idsPlayers.forEach((el) => {
       if (connections.has(el)) {
-        console.log("зашли сюда")
         connections.get(el)?.ws.send(JSON.stringify(resp))
       }
     })
-
-
-    //ws.send(JSON.stringify(resp));
   }
-
 }

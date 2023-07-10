@@ -29,7 +29,7 @@ export const eventHandler = (ws: WebSocket) => {
           addUserToRoomHandler(req, connectionId)
           break;
         case 'add_ships':
-          addShipsHandler(req, connectionId);
+          addShipsHandler(req);
           break
       }
 
