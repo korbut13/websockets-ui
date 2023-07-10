@@ -5,6 +5,7 @@ import { regHandler } from "./requestsHandlers/reg_handler";
 import { createRoomHandler } from "./requestsHandlers/create_room_handler";
 import { addUserToRoomHandler } from "./requestsHandlers/add_user_to_room_handler";
 import { addShipsHandler } from "./requestsHandlers/add_ships_handler";
+import { attackHandler } from "./game_process/attack_handler";
 
 import { Request } from "../utils/types";
 
@@ -30,11 +31,15 @@ export const eventHandler = (ws: WebSocket) => {
           break;
         case 'add_ships':
           addShipsHandler(req);
-          break
+          break;
+        case 'attack':
+          attackHandler(req);
+          break;
       }
 
     } catch (err) {
       console.log(555, err)
     }
   })
+
 }

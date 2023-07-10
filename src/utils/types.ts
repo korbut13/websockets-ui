@@ -40,4 +40,5 @@ export type Ship = {
   direction: boolean,
   length: number,
   type: string,
+  positionEachDeck?: Map<number, { x: number, y: number }>,
 }
