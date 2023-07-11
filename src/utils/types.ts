@@ -41,4 +41,5 @@ export type Ship = {
   length: number,
   type: string,
   positionEachDeck?: Map<number, { x: number, y: number }>,
+  positionEmptyCell?: Map<number, { x: number, y: number }>,
 }
