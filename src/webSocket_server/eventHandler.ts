@@ -6,6 +6,7 @@ import { createRoomHandler } from "./requestsHandlers/create_room_handler";
 import { addUserToRoomHandler } from "./requestsHandlers/add_user_to_room_handler";
 import { addShipsHandler } from "./requestsHandlers/add_ships_handler";
 import { attackHandler } from "./game_process/attack_handler";
+import { randomAttackHandler } from "./requestsHandlers/random_attack_handler";
 
 import { Request } from "../utils/types";
 
@@ -16,8 +17,6 @@ export const eventHandler = (ws: WebSocket) => {
     try {
       const req: Request = JSON.parse(message);
       const typeOfReq = req.type;
-
-      //console.log(2222, req)
 
       switch (typeOfReq) {
         case 'reg':
@@ -34,6 +33,9 @@ export const eventHandler = (ws: WebSocket) => {
           break;
         case 'attack':
           attackHandler(req);
+          break;
+        case 'randomAttack':
+          randomAttackHandler(req);
           break;
       }
 

@@ -18,7 +18,6 @@ export const sendResponseAfterAttack = (status: string, xPosition: number, yPosi
     id: 0,
   };
 
-
   const firstPlayer = dataBaseGames.get(gameId)!.get(0)!.indexPlayer;
   const secondPlayer = dataBaseGames.get(gameId)!.get(1)!.indexPlayer;
 
