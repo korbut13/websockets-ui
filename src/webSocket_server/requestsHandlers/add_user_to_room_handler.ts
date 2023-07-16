@@ -14,11 +14,11 @@ export const addUserToRoomHandler = (req: Request, connectionId: string) => {
 
   if (!isPlayerInCurrentRoom(currentRoom, idUser) && currentRoom.roomUsers.length < 2) {
     const newPlayer = { ...connections.get(connectionId) } as Player;
-    currentRoom.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer, ships: [] });
+    currentRoom.roomUsers.push({ name: newPlayer.name, index: newPlayer.idPlayer, ships: [], });
   }
 
   if (currentRoom.roomUsers.length === 2) {
-    const game = new Map<number, { indexPlayer: string, ships: Ship[], killedShips: number }>();
+    const game = new Map<number, { indexPlayer: string, ships: Ship[], killedShips: number, moves: [] }>();
 
     currentRoom.roomUsers.forEach((player, index) => {
       const dataGame = {
@@ -26,7 +26,7 @@ export const addUserToRoomHandler = (req: Request, connectionId: string) => {
         idPlayer: index,
       };
 
-      game.set(index, { indexPlayer: player.index, ships: [] as Ship[], killedShips: 0 })
+      game.set(index, { indexPlayer: player.index, ships: [] as Ship[], killedShips: 0, moves: [] })
       dataBaseGames.set(indexRoom, game);
 
       const resp = {

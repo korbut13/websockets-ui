@@ -1,18 +1,5 @@
 import { WebSocket } from "ws";
 
-export type RegData = {
-  type: string,
-  data: {
-    name: string,
-    password: string,
-  },
-  id: number,
-}
-
-export type DataBase = {
-  players: Player[]
-};
-
 export type Player = {
   name: string,
   password: string,
@@ -29,7 +16,7 @@ export type Request = {
 
 export type Room = {
   roomId: number,
-  roomUsers: { name: string, index: string, ships: Ship[] }[],
+  roomUsers: { name: string, index: string, ships: Ship[], }[],
 }
 export type DataBaseRooms = Room[];
 
