@@ -18,6 +18,7 @@ export type Player = {
   password: string,
   idPlayer: string,
   ws: WebSocket,
+  wins: number,
 }
 
 export type Request = {

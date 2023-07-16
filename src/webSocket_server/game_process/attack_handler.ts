@@ -1,10 +1,10 @@
 import { dataBaseGames } from "../../dataBase/dataBaseGames";
 import { attackedShip } from "../../dataBase/attakedShip";
 import { setEmptyPositionAround } from "../../utils/setEmptyPositionAround";
-import { sendResponseAfterAttack } from "./sendResponseAfterAttack";
 import { nextPlayer } from "../../utils/nextPlayer";
+import { sendResponseAfterAttack } from "./sendResponseAfterAttack";
+import { finishGame } from "./finish";
 import { Request } from "../../utils/types";
-import { connections } from "../../dataBase/dataBaseConnections";
 
 export const attackHandler = (req: Request) => {
   const reqData: { gameId: number, x: number, y: number, indexPlayer: number } = JSON.parse(req.data);
@@ -30,32 +30,11 @@ export const attackHandler = (req: Request) => {
           if (ship.positionEachDeck!.size === 0) {
             status = 'killed';
 
-            emptyPositions = setEmptyPositionAround(attackedShip);
-            attackedShip.length = 0;
-
             const ammountKilledShips = dataBaseGames.get(gameId)!.get(indexRival)!.killedShips;
             dataBaseGames.get(gameId)!.get(indexRival)!.killedShips = ammountKilledShips + 1;
-            if (dataBaseGames.get(gameId)!.get(indexRival)!.killedShips === 10) {
 
-              const resp = {
-                type: "finish",
-                data: JSON.stringify({
-                  winPlayer: indexPlayer,
-                }),
-                id: 0
-              }
-
-              const firstPlayer = dataBaseGames.get(gameId)!.get(0)!.indexPlayer;
-              const secondPlayer = dataBaseGames.get(gameId)!.get(1)!.indexPlayer;
-
-              if (connections.has(firstPlayer)) {
-                connections.get(firstPlayer)?.ws.send(JSON.stringify(resp))
-              };
-
-              if (connections.has(secondPlayer)) {
-                connections.get(secondPlayer)?.ws.send(JSON.stringify(resp))
-              }
-            }
+            emptyPositions = setEmptyPositionAround(attackedShip);
+            attackedShip.length = 0;
 
           } else {
             status = 'shot';
@@ -68,18 +47,19 @@ export const attackHandler = (req: Request) => {
       }
       if (status !== 'miss') break;
     }
-
-
     sendResponseAfterAttack(status, xPosition, yPosition, indexPlayer, gameId, nextPlayer.index);
+
     if (status === 'killed') {
       emptyPositions.forEach((position) => {
         sendResponseAfterAttack("miss", position.x, position.y, indexPlayer, gameId, nextPlayer.index)
       })
     }
 
+    if (dataBaseGames.get(gameId)!.get(indexRival)!.killedShips === 10) {
+      finishGame(gameId, indexPlayer);
+
+    }
   } else {
     console.log("Next player's turn")
   }
-
-
 }
