@@ -10,3 +10,4 @@ httpServer.listen(HTTP_PORT);
 export const wss = new WebSocketServer({ port: 3000 });
 
 wss.on('connection', eventHandler)
+console.log(`Start WebSocket server on the 3000 port!`)
